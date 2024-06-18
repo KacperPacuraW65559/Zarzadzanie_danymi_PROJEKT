@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="centered-content">
+    <h2>Dodaj nową książkę</h2>
+    <form method="post" action="{{ url_for('add_book') }}">
+        <label for="title">Tytuł:</label>
+        <input type="text" name="title" id="title" required>
+
+        <label for="author">Autor:</label>
+        <input type="text" name="author" id="author" required>
+
+        <label for="year">Rok wydania:</label>
+        <input type="number" name="year" id="year" required>
+
+        <label for="genre">Gatunek:</label>
+        <input type="text" name="genre" id="genre" required>
+
+        <button type="submit">Dodaj książkę</button>
+    </form>
+</div>
+{% endblock %}

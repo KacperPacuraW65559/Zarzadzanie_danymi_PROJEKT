@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="centered-content">
+    <h2>{{ book['title'] }}</h2>
+    <p><strong>Autor:</strong> {{ book['author'] }}</p>
+    <p><strong>Rok wydania:</strong> {{ book['year'] }}</p>
+    <p><strong>Typ:</strong> {{ book['genre'] }}</p>
+    <p><strong>Status:</strong> 
+        {% if book['borrowed'] == 1 %}
+            Dostępna
+        {% else %}
+            Wypożyczona
+        {% endif %}
+    </p>
+    <form method="post" action="{{ url_for('toggle_borrowed', id=book['id']) }}">
+        <button type="submit">
+            {% if book['borrowed'] == 1 %}
+                Wypożycz
+            {% else %}
+                Zwróć
+            {% endif %}
+        </button>
+    </form>
+    <form method="post" action="{{ url_for('delete_book', id=book['id']) }}" class="delete-form">
+        <button type="submit">Usuń</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Lista książek</h2>
+<form method="get" action="{{ url_for('book_list') }}">
+    <label for="status">Filtruj według dostępności:</label>
+    <select name="status" id="status" onchange="this.form.submit()">
+        <option value="" {% if not filter_status %}selected{% endif %}>Wszystkie</option>
+        <option value="available" {% if filter_status == 'available' %}selected{% endif %}>Dostępne</option>
+        <option value="borrowed" {% if filter_status == 'borrowed' %}selected{% endif %}>Wypożyczone</option>
+    </select>
+    <label for="genre">Filtruj według typu:</label>
+    <select name="genre" id="genre" onchange="this.form.submit()">
+        <option value="" {% if not filter_genre %}selected{% endif %}>Wszystkie</option>
+        {% for genre in genres %}
+        <option value="{{ genre['genre'] }}" {% if filter_genre == genre['genre'] %}selected{% endif %}>{{ genre['genre'] }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Tytuł</th>
+            <th>Status</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td><a href="{{ url_for('book_details', id=book['id']) }}">{{ book['title'] }}</a></td>
+            <td>
+                {% if book['borrowed'] == 1 %}
+                    Dostępna
+                {% else %}
+                    Wypożyczona
+                {% endif %}
+            </td>
+            <td>
+                <form class="delete-form" action="{{ url_for('delete_book', id=book['id']) }}" method="post" style="display:inline;">
+                    <button type="submit">Usuń</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
